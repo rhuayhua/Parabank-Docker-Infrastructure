@@ -33,6 +33,6 @@ services:
         - HUB_HOST=hub
         - MODULE
     volumes:
-      - /home/ubuntu/aws/output/test-output:/home/parabank/test-output
-      - /home/ubuntu/aws/output/allure-results:/home/parabank/allure-results
+      - /home/ubuntu/aws/output/test-output:/home/ubuntu/parabank/test-output
+      - /home/ubuntu/aws/output/allure-results:/home/ubuntu/parabank/allure-results
 
