@@ -1,0 +1,38 @@
+version: "3"
+services:
+  hub:
+    image: selenium/hub:4.9.1
+    container_name: hub
+  chrome:
+    image: selenium/node-chrome:115.0
+    shm_size: "2g"
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    depends_on:
+      - hub
+  firefox:
+    image: selenium/node-firefox:116.0
+    shm_size: "2g"
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    depends_on:
+      - hub
+  parabank-module:
+    image: rhuayhua/selenium-parabank:latest
+    depends_on:
+      - chrome
+      - firefox
+    environment:
+        - ExecutionType
+        - BrowserName
+        - groups
+        - HUB_HOST=hub
+        - MODULE
+    volumes:
+      - /home/ubuntu/aws/output/test-output:/home/parabank/test-output
+      - /home/ubuntu/aws/output/allure-results:/home/parabank/allure-results
+
