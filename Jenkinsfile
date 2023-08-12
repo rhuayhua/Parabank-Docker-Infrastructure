@@ -35,19 +35,20 @@ pipeline {
                 sh "docker-compose up parabank-module"
             }
         }
+    }
 
-        post {
-            always {
-                sh "echo DIRECTORY: `pwd`"
-                sh "rsync -av /home/ubuntu/aws/output/allure-results ${JENKINS_WORKSPACE}/output"
-                sh "rsync -av /home/ubuntu/aws/output/test-output ${JENKINS_WORKSPACE}/output"
-                sh "rm -fR /home/ubuntu/aws/output/allure-results/*"
-                sh "rm -fR /home/ubuntu/aws/output/test-output/*"
-                archiveArtifacts artifacts: "output/**"
-                allure includeProperties: false, jdk: '', results: [[path: 'output/allure-results']]
-                sh "rm -fR ${JENKINS_WORKSPACE}/output/"
-                sh "docker-compose down"
-            }
+    post {
+        always {
+            sh "echo DIRECTORY: `pwd`"
+            sh "rsync -av /home/ubuntu/aws/output/allure-results ${JENKINS_WORKSPACE}/output"
+            sh "rsync -av /home/ubuntu/aws/output/test-output ${JENKINS_WORKSPACE}/output"
+            sh "rm -fR /home/ubuntu/aws/output/allure-results/*"
+            sh "rm -fR /home/ubuntu/aws/output/test-output/*"
+            archiveArtifacts artifacts: "output/**"
+            allure includeProperties: false, jdk: '', results: [[path: 'output/allure-results']]
+            sh "rm -fR ${JENKINS_WORKSPACE}/output/"
+            sh "docker-compose down"
         }
     }
+
 }
